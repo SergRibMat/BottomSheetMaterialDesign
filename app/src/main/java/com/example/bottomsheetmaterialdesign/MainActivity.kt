@@ -46,11 +46,8 @@ class MainActivity : AppCompatActivity() {
         toggleButton.setOnClickListener {
             if (toggleButton.isChecked){
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                showToast("CAMBIO A ON")
             }else{
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-
-                showToast("CAMBIO A OFF")
             }
         }
     }
