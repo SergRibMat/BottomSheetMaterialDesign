@@ -3,14 +3,14 @@ package com.example.bottomsheetmaterialdesign
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.*
+import androidx.core.widget.ContentLoadingProgressBar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity(), ExampleBottomSheetDialogFragment.BottomSheetListener {
 
@@ -40,7 +40,13 @@ class MainActivity : AppCompatActivity(), ExampleBottomSheetDialogFragment.Botto
 
         initViews()
 
+        initLoadingBar()
+
         //model takes time, so notice the user while its being
+    }
+
+    private fun initLoadingBar() {
+
     }
 
     fun persistentBottomSheet(){
@@ -65,24 +71,19 @@ class MainActivity : AppCompatActivity(), ExampleBottomSheetDialogFragment.Botto
 
     fun modelBottomSheet(){
 
-
-        //val bottomSheetDialog = BottomSheetDialog(this)
-
-        //val view = layoutInflater.inflate(R.layout.bottom_sheet, null)
-
-        //bottomSheetDialog.setContentView(view)
-
-        val frameLayout = findViewById<FrameLayout>(R.id.frame_layout)
+        //val frameLayout = findViewById<FrameLayout>(R.id.frame_layout)
         val modelBtn = findViewById<Button>(R.id.model_btn)
+        val loadingProgressBar = findViewById<ContentLoadingProgressBar>(R.id.loading_pb)
 
-        //luego, probar sin coroutine
-        modelBtn.setOnClickListener{
+        modelBtn.setOnClickListener{v ->
             job = Job()
             uiScope =CoroutineScope(Dispatchers.Main +  job)
             uiScope.launch {
+                loadingProgressBar.visibility = VISIBLE
+                delay(5 * 1000)
                 val bottomSheet = ExampleBottomSheetDialogFragment()
-                //bottomSheetDialog.show() //put this inside a onClickListener
                 bottomSheet.show(supportFragmentManager, "ExampleBottomSheet")
+                loadingProgressBar.visibility = GONE
                 job.cancel()
             }
 
